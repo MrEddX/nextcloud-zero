@@ -30,7 +30,15 @@ NEXTCLOUDADMINUSERPASSWORD=$(openssl rand -hex 16)
 NCRELEASE="latest.tar.bz2"
 
 # Ihre Nextcloud Domain ohne(!) https
+# Wird der Parameter LETSENCRYPT="y" gesetzt
+# so werden TLS Zertifikate von dieser Domain
+# von Let's Encrypt automatisch eingebunden
 NEXTCLOUDDNS="ihre.domain.de"
+
+# Let'sEncrypt-TLS: [y|n]
+# Sollen Zertifikate von LetsEncrypt eingerichtet werden?
+# LETSENCRYPT="y" <- inkl. automat. Renewals
+LETSENCRYPT="n"
 
 # Nextcloud Externe IP(v4), bspw.:
 # NEXTCLOUDEXTIP="123.124.125.120"
@@ -47,11 +55,6 @@ DATABASE="m"
 # 2. LAN-Interface (ETH1): [y|n]
 # Bspw. für vLAN's 
 LAN2="n"
-
-# Let'sEncrypt-TLS: [y|n]
-# Sollen Zertifikate von LetsEncrypt eingerichtet werden?
-# LETSENCRYPT="y" <- inkl. automat. Renewals
-LETSENCRYPT="n"
 
 ###########################
 # Installationsskript     #
