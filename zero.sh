@@ -78,8 +78,8 @@ fi
 if [ "$(lsb_release -r | awk '{ print $2 }')" = "22.04" ]
 then
 clear
-echo "Test: Root .....::: OK"
-echo "Test: Ubuntu ...::: OK"
+echo "Test: Root ......:::: OK"
+echo "Test: Ubuntu 22.04 .: OK"
 sleep 2
 else
 clear
