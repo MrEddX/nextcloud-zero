@@ -19,7 +19,7 @@ Installieren Sie Ihren eigenen Nextcloud-Server in weniger als 10 Minuten.
 
 * zero.sh (Auswahl MariaDB o. PostgreSQL)
 
-<code>cp auto-installer/zero.sh .</code><br>
+<code>cp nextcloud-zero/zero.sh .</code><br>
 
 <code>chmod +x zero.sh*.sh</code><br>
 
