@@ -1,8 +1,9 @@
 # Neues Nextcloud Auto-Installerskript
 Installieren Sie Ihren eigenen Nextcloud-Server in weniger als 10 Minuten.
 
-<h2>Bis zur Fertigstellung PRIVAT ONLY</h2>
+<h2>Bis zur Fertigstellung: PRIVATE ONLY</h2>
 <h2>Basis f. Ubuntu 22 u. Nextcloud 24</h2>
+<h2>nach Finalisierung -> PUBLIC</h2>
 
 * Ubuntu 22.x (aktuell stehen noch nicht alle Repositories zur Verfügung!)
 * nginx
