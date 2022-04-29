@@ -138,6 +138,7 @@ ${mv} /etc/hosts.bak /etc/hosts
 echo "Software entfernen..."
 apt remove --purge --allow-change-held-packages -y nginx* php* mariadb-* mysql-common libdbd-mariadb-perl galera-* postgresql-* redis* fail2ban ufw
 rm -Rf /etc/ufw /etc/fail2ban /var/www /etc/mysql /etc/postgresql /etc/postgresql-common /var/lib/mysql /var/lib/postgresql /etc/letsencrypt /var/log/nextcloud /home/$BENUTZERNAME/install.log /home/$BENUTZERNAME/update.sh /home/$BENUTZERNAME/mariadb_repo_setup
+${addaptrepository} ppa:ondrej/php -ry
 rm -f /etc/ssl/certs/dhparam.pem /etc/apt/sources.list.d/* /etc/motd /root/.bash_aliases
 deluser --remove-all-files acmeuser
 crontab -u www-data -r
@@ -262,8 +263,9 @@ ${systemctl} mask sleep.target suspend.target hibernate.target hybrid-sleep.targ
 ###########################
 # PHP 8 Repositories      #
 ###########################
-${echo} "deb https://ppa.launchpadcontent.net/ondrej/php/ubuntu $(lsb_release -cs) main" | /usr/bin/tee /etc/apt/sources.list.d/php.list
-${aptkey} adv --keyserver keyserver.ubuntu.com --recv-keys 4f4ea0aae5267a6c
+${addaptrepository} ppa:ondrej/php -y
+# ${echo} "deb https://ppa.launchpadcontent.net/ondrej/php/ubuntu $(lsb_release -cs) main" | /usr/bin/tee /etc/apt/sources.list.d/php.list
+# ${aptkey} adv --keyserver keyserver.ubuntu.com --recv-keys 4f4ea0aae5267a6c
 
 ###########################
 # NGINX Repositories      #
