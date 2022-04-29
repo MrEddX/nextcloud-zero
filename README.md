@@ -4,8 +4,7 @@ Installieren Sie Ihren eigenen Nextcloud-Server in weniger als 10 Minuten.
 <h2>Bis zur Fertigstellung PRIVAT ONLY</h2>
 <h2>Basis f. Ubuntu 22 u. Nextcloud 24</h2>
 
-* Ubuntu 20.04
-* Ubuntu 22.x in Vorbereitung (aktuell stehen noch nicht alle Repositories zur Verfügungung!)
+* Ubuntu 22.x (aktuell stehen noch nicht alle Repositories zur Verfügungung!)
 
 <h2>INSTALLATION:</h2>
 
