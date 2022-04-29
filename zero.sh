@@ -617,6 +617,7 @@ upstream php-handler {
       }
    }
 EOF
+### MUSS für Nextcloud 24 angepasst werden!
 ${cat} <<EOF >/etc/nginx/conf.d/nextcloud.conf
 server {
   listen 443 ssl http2 default_server;
