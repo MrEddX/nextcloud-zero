@@ -94,7 +94,7 @@ fi
 RESOLVER=$(cat /etc/resolv.conf | grep "nameserver" | awk '{ print $2 }')
 
 # Lokale IP ermitteln
-IPA=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
+IPA=$(ip addr | grep 'inet ' | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
 
 ###########################
 # Systempfade auslesen    #
