@@ -67,6 +67,8 @@ BENUTZERNAME=$(logname)
 if [ "$(id -u)" != "0" ]
 then
 clear
+echo "****************************************"
+echo "* Installationsskript wird vorbereitet *"
 echo ""
 echo "*****************************"
 echo "* BITTE ALS ROOT AUSFÜHREN! *"
@@ -78,6 +80,8 @@ fi
 if [ "$(lsb_release -r | awk '{ print $2 }')" = "22.04" ]
 then
 clear
+echo "****************************************"
+echo "* Installationsskript wird vorbereitet *"
 echo "Test: Root ......:::: OK"
 echo "Test: Ubuntu 22.04 .: OK"
 sleep 2
@@ -90,6 +94,35 @@ echo "*****************************"
 echo ""
 exit 1
 fi
+
+###########################
+# Prüfen ob Benutzer-     #
+# verzeichnis existiert   #
+###########################
+if [ ! -d "/home/$BENUTZERNAME/" ]; then
+  echo "Benutzerverzeichnis existiert nicht. Wird erstellt..."
+  mkdir /home/$BENUTZERNAME/
+  echo "Test: Benutzerverzeichnis : OK"
+  else
+  echo "Test: Benutzerverzeichnis : OK"
+  fi
+
+
+###########################
+# Prüfen ob Installations-#
+# Script-verzeichnis      #
+# existiert               #
+###########################
+  if [ ! -d "/home/$BENUTZERNAME/Nextcloud-Installationsskript/" ]; then
+  echo "Installationsskript-Verzeichnis existiert nicht. Wird erstellt..."
+  mkdir /home/$BENUTZERNAME/Nextcloud-Installationsskript/
+  echo "Test: Installationsskript-Verzeichnis : OK"
+    else
+  echo "Test: Installationsskript-Verzeichnis : OK"
+  fi
+
+  echo "*            Abgeschlossen             *"
+  echo "****************************************"
 
 # ***************************************************************************************#
 
@@ -133,14 +166,14 @@ wget=$(which wget)
 # Uninstall-Skript        #
 ###########################
 
-${touch} /home/$BENUTZERNAME/uninstall.sh
-${cat} <<EOF >/home/$BENUTZERNAME/uninstall.sh
+${touch} /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
+${cat} <<EOF >/home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
 #!/bin/bash
 rm -Rf $NEXTCLOUDDATAPATH
 ${mv} /etc/hosts.bak /etc/hosts
 echo "Software entfernen..."
 apt remove --purge --allow-change-held-packages -y nginx* php* mariadb-* mysql-common libdbd-mariadb-perl galera-* postgresql-* redis* fail2ban ufw
-rm -Rf /etc/ufw /etc/fail2ban /var/www /etc/mysql /etc/postgresql /etc/postgresql-common /var/lib/mysql /var/lib/postgresql /etc/letsencrypt /var/log/nextcloud /home/$BENUTZERNAME/install.log /home/$BENUTZERNAME/update.sh /home/$BENUTZERNAME/mariadb_repo_setup
+rm -Rf /etc/ufw /etc/fail2ban /var/www /etc/mysql /etc/postgresql /etc/postgresql-common /var/lib/mysql /var/lib/postgresql /etc/letsencrypt /var/log/nextcloud /home/$BENUTZERNAME/Nextcloud-Installationsskript/install.log /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh /home/$BENUTZERNAME/Nextcloud-Installationsskript/mariadb_repo_setup
 ${addaptrepository} ppa:ondrej/php -ry
 ${addaptrepository} ppa:ondrej/nginx -ry
 rm -f /etc/ssl/certs/dhparam.pem /etc/apt/sources.list.d/* /etc/motd /root/.bash_aliases
@@ -151,7 +184,7 @@ apt autoremove -y
 apt autoclean -y
 exit 0
 EOF
-chmod +x /home/$BENUTZERNAME/uninstall.sh
+chmod +x /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
 
 ###########################
 # Hostdatei anpassen      #
@@ -181,7 +214,7 @@ EOF
 # Logdatei                #
 # install.log             #
 ###########################
-exec > >(tee -i "/home/$BENUTZERNAME/install.log")
+exec > >(tee -i "/home/$BENUTZERNAME/Nextcloud-Installationsskript/install.log")
 exec 2>&1
 
 ###########################
@@ -1097,8 +1130,8 @@ EOF
 ###########################
 # Update-Skript anlegen   #
 ###########################
-${touch} /home/$BENUTZERNAME/update.sh
-${cat} <<EOF >/home/$BENUTZERNAME/update.sh
+${touch} /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
+${cat} <<EOF >/home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
 #!/bin/bash
 apt-get update
 apt-get upgrade -V
@@ -1119,7 +1152,7 @@ sudo -u www-data php /var/www/nextcloud/occ app:update --all
 if [ -e /var/run/reboot-required ]; then echo "*** NEUSTART ERFORDERLICH ***";fi
 exit 0
 EOF
-${chmod} +x /home/$BENUTZERNAME/update.sh
+${chmod} +x /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
 
 ###########################
 # Bereinigung             #
