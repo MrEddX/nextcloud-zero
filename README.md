@@ -5,9 +5,9 @@ Installieren Sie Ihren eigenen Nextcloud-Server in weniger als 10 Minuten.
 <h2>Basis f. Ubuntu 22 u. Nextcloud 24</h2>
 <h2>nach Finalisierung -> PUBLIC</h2>
 
-* Ubuntu 22.x (aktuell stehen noch nicht alle Repositories zur Verfügung!)
-* nginx
-* MariaDB
+* Ubuntu 22.x (aktuell stehen noch nicht die aktuellen Repositories zur Verfügung!)
+* PHP (8.0) und NGINX (1.20.2) derzeit auf PPA umgestellt
+* MariaDB 10.6 direkt von Ubuntu 22
 
 <h2>INSTALLATION:</h2>
 
