@@ -3,6 +3,9 @@
 # Ubuntu 20.04+ LTS x86_64
 # Nextcloud latest
 # Carsten Rieger IT-Services (www.c-rieger.de)
+# Vielen Dank an:
+# https://github.com/MrEddX
+# https://github.com/DasCanard
 ##########################################################################################
 
 ###########################
@@ -69,13 +72,14 @@ echo ""
 exit 1
 fi
 
-if [ "$(lsb_release -r | awk '{ print $2 }')" = "20.04" ]
+if [ "$(lsb_release -r | awk '{ print $2 }')" = "22.04" ]
 then
 clear
 echo "Test: Root .....::: OK"
 echo "Test: Ubuntu ...::: OK"
 sleep 2
 else
+clear
 echo ""
 echo "*****************************"
 echo "* Skript exkl. Ubuntu 20.04 *"
@@ -258,7 +262,7 @@ ${systemctl} mask sleep.target suspend.target hibernate.target hybrid-sleep.targ
 ###########################
 # PHP 8 Repositories      #
 ###########################
-${echo} "deb https://ppa.launchpadcontent.net/ondrej/php/ubuntu focal main" | /usr/bin/tee /etc/apt/sources.list.d/php.list
+${echo} "deb https://ppa.launchpadcontent.net/ondrej/php/ubuntu $(lsb_release -cs) main" | /usr/bin/tee /etc/apt/sources.list.d/php.list
 ${aptkey} adv --keyserver keyserver.ubuntu.com --recv-keys 4f4ea0aae5267a6c
 
 ###########################
