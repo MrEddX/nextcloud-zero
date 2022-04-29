@@ -998,7 +998,7 @@ ${service} nginx restart
 ${echo} ""
 ${echo} "Systemoptimierungen"
 ${echo} ""
-${echo} "Dieser Vorgang kann mehrere Minuten dauern - bitte haben Sie Geduld!
+${echo} "Dieser Vorgang kann mehrere Minuten dauern - bitte haben Sie Geduld!"
 ${echo} ""
 ${sudo} -u www-data /usr/bin/php -f /var/www/nextcloud/cron.php & CrI
 
