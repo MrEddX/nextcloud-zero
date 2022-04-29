@@ -142,6 +142,7 @@ echo "Software entfernen..."
 apt remove --purge --allow-change-held-packages -y nginx* php* mariadb-* mysql-common libdbd-mariadb-perl galera-* postgresql-* redis* fail2ban ufw
 rm -Rf /etc/ufw /etc/fail2ban /var/www /etc/mysql /etc/postgresql /etc/postgresql-common /var/lib/mysql /var/lib/postgresql /etc/letsencrypt /var/log/nextcloud /home/$BENUTZERNAME/install.log /home/$BENUTZERNAME/update.sh /home/$BENUTZERNAME/mariadb_repo_setup
 ${addaptrepository} ppa:ondrej/php -ry
+${addaptrepository} ppa:ondrej/nginx -ry
 rm -f /etc/ssl/certs/dhparam.pem /etc/apt/sources.list.d/* /etc/motd /root/.bash_aliases
 deluser --remove-all-files acmeuser
 crontab -u www-data -r
