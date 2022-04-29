@@ -85,7 +85,7 @@ else
 clear
 echo ""
 echo "*****************************"
-echo "* Skript exkl. Ubuntu 20.04 *"
+echo "* Skript exkl. Ubuntu 22.04 *"
 echo "*****************************"
 echo ""
 exit 1
@@ -284,11 +284,13 @@ ${addaptrepository} ppa:ondrej/nginx -y
 ###########################
 if [ $DATABASE == "m" ]
 then
-        ${echo} "deb [arch=amd64] https://mirror.kumi.systems/mariadb/repo/10.7/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/mariadb.list
-        ${aptkey} adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+        ${echo} "MariaDB aus dem PPA"
+        # ${echo} "deb [arch=amd64] https://mirror.kumi.systems/mariadb/repo/10.7/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/mariadb.list
+        # ${aptkey} adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 else
-        ${echo} "deb [arch=amd64] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list
-        ${wget} --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+        ${echo} "postgreSQL aus dem PPA"
+        # ${echo} "deb [arch=amd64] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list
+        # ${wget} --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 fi
 
 ###########################
