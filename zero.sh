@@ -92,7 +92,6 @@ echo "* Test: Root ...............:::::::::::::::: OK *"
 echo ""
 echo "* Test: Ubuntu 22.04 LTS .........:::::::::: OK *"
 echo ""
-sleep 2
 else
 clear
 echo ""
@@ -137,6 +136,7 @@ if [ ! -d "/home/$BENUTZERNAME/" ]; then
   echo "*  Pre-Installationschecks erfolgreich!         *"
   echo "*************************************************"
   echo ""
+  sleep 3
 
 # Namensauflösung ermitteln
 RESOLVER=$(cat /etc/resolv.conf | grep "nameserver" | awk '{ print $2 }')
