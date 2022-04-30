@@ -85,16 +85,13 @@ if [ "$(lsb_release -r | awk '{ print $2 }')" = "22.04" ]
 then
 clear
 echo "*************************************************"
-echo " * Pre-Installationschecks werden durchgefuehrt *"
+echo "*  Pre-Installationschecks werden durchgefuehrt *"
 echo "*************************************************"
 echo ""
 echo "* Test: Root ...............:::::::::::::::: OK *"
 echo ""
 echo "* Test: Ubuntu 22.04 LTS .........:::::::::: OK *"
 echo ""
-echo "*************************************************"
-echo " * Pre-Installationschecks erfolgreich!         *"
-echo "*************************************************"
 sleep 2
 else
 clear
@@ -105,6 +102,44 @@ echo "**************************************"
 echo ""
 exit 1
 fi
+
+###########################
+# Prüfen ob Benutzer-     #
+# verzeichnis existiert   #
+###########################
+if [ ! -d "/home/$BENUTZERNAME/" ]; then
+  echo "* Erstelle: Benutzerverzeichnis ......:::::: OK *"
+  echo ""
+  mkdir /home/$BENUTZERNAME/
+  echo "* Test: Benutzerverzeichnis ........:::::::: OK *"
+  echo ""
+  else
+  echo "* Test: Benutzerverzeichnis ........:::::::: OK *"
+  echo ""
+  fi
+
+
+###########################
+# Prüfen ob Installations-#
+# Script-verzeichnis      #
+# existiert               #
+###########################
+  if [ ! -d "/home/$BENUTZERNAME/Nextcloud-Installationsskript/" ]; then
+  echo "* Erstelle: Installationsskript-Verzeichnis  OK *"
+  echo ""
+  mkdir /home/$BENUTZERNAME/Nextcloud-Installationsskript/
+  echo "* Test: Installationsskript-Verzeichnis ..:: OK *"
+  echo ""
+    else
+  echo "* Test: Installationsskript-Verzeichnis ..:: OK *"
+  echo ""
+  fi
+
+  echo "*  Pre-Installationschecks erfolgreich!         *"
+  echo "*************************************************"
+  echo ""
+
+# ***************************************************************************************#
 
 # Namensauflösung ermitteln
 RESOLVER=$(cat /etc/resolv.conf | grep "nameserver" | awk '{ print $2 }')
@@ -146,8 +181,8 @@ wget=$(which wget)
 # Uninstall-Skript        #
 ###########################
 
-${touch} /home/$BENUTZERNAME/uninstall.sh
-${cat} <<EOF >/home/$BENUTZERNAME/uninstall.sh
+${touch} /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
+${cat} <<EOF >/home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
 #!/bin/bash
 # Ausführung als ROOT überprüfen
 if [ "$(id -u)" != "0" ]
@@ -180,7 +215,7 @@ rm -Rf $NEXTCLOUDDATAPATH
 ${mv} /etc/hosts.bak /etc/hosts
 echo "Software entfernen..."
 apt remove --purge --allow-change-held-packages -y nginx* php* mariadb-* mysql-common libdbd-mariadb-perl galera-* postgresql-* redis* fail2ban ufw
-rm -Rf /etc/ufw /etc/fail2ban /var/www /etc/mysql /etc/postgresql /etc/postgresql-common /var/lib/mysql /var/lib/postgresql /etc/letsencrypt /var/log/nextcloud /home/$BENUTZERNAME/install.log /home/$BENUTZERNAME/update.sh /home/$BENUTZERNAME/mariadb_repo_setup
+rm -Rf /etc/ufw /etc/fail2ban /var/www /etc/mysql /etc/postgresql /etc/postgresql-common /var/lib/mysql /var/lib/postgresql /etc/letsencrypt /var/log/nextcloud /home/$BENUTZERNAME/Nextcloud-Installationsskript/install.log /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh /home/$BENUTZERNAME/Nextcloud-Installationsskript/mariadb_repo_setup
 ${addaptrepository} ppa:ondrej/php -ry
 ${addaptrepository} ppa:ondrej/nginx -ry
 rm -f /etc/ssl/certs/dhparam.pem /etc/apt/sources.list.d/* /etc/motd /root/.bash_aliases
@@ -191,7 +226,7 @@ apt autoremove -y
 apt autoclean -y
 exit 0
 EOF
-chmod +x /home/$BENUTZERNAME/uninstall.sh
+chmod +x /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
 
 ###########################
 # Hostdatei anpassen      #
@@ -221,7 +256,7 @@ EOF
 # Logdatei                #
 # install.log             #
 ###########################
-exec > >(tee -i "/home/$BENUTZERNAME/install.log")
+exec > >(tee -i "/home/$BENUTZERNAME/Nextcloud-Installationsskript/install.log")
 exec 2>&1
 
 ###########################
@@ -1137,8 +1172,8 @@ EOF
 ###########################
 # Update-Skript anlegen   #
 ###########################
-${touch} /home/$BENUTZERNAME/update.sh
-${cat} <<EOF >/home/$BENUTZERNAME/update.sh
+${touch} /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
+${cat} <<EOF >/home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
 #!/bin/bash
 apt-get update
 apt-get upgrade -V
@@ -1159,7 +1194,7 @@ sudo -u www-data php /var/www/nextcloud/occ app:update --all
 if [ -e /var/run/reboot-required ]; then echo "*** NEUSTART ERFORDERLICH ***";fi
 exit 0
 EOF
-${chmod} +x /home/$BENUTZERNAME/update.sh
+${chmod} +x /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
 
 ###########################
 # Bereinigung             #
