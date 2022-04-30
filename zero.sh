@@ -78,20 +78,27 @@ fi
 if [ "$(lsb_release -r | awk '{ print $2 }')" = "22.04" ]
 then
 clear
-echo "Test: Root ......:::: OK"
-echo "Test: Ubuntu 22.04 .: OK"
+echo "*************************************************"
+echo " * Pre-Installationschecks werden durchgefuehrt *"
+echo "*************************************************"
+echo ""
+echo "* Test: Root ...............:::::::::::::::: OK *"
+echo ""
+echo "* Test: Ubuntu 22.04 LTS .........:::::::::: OK *"
+echo ""
+echo "*************************************************"
+echo " * Pre-Installationschecks erfolgreich!         *"
+echo "*************************************************"
 sleep 2
 else
 clear
 echo ""
 echo "*****************************"
-echo "* Skript exkl. Ubuntu 22.04 *"
+echo "* Skript exkl. für Ubuntu 22 *"
 echo "*****************************"
 echo ""
 exit 1
 fi
-
-# ***************************************************************************************#
 
 # Namensauflösung ermitteln
 RESOLVER=$(cat /etc/resolv.conf | grep "nameserver" | awk '{ print $2 }')
@@ -157,7 +164,7 @@ echo "**************************************************************************
 echo
 echo "Press Ctrl+C To Abort"
 echo
-seconds=$((30))
+seconds=$((10))
 while [ $seconds -gt 0 ]; do
    echo -ne "Removal begins after: $seconds\033[0K\r"
    sleep 1
