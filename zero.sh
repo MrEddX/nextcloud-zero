@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################################################################
-# Ubuntu 20.04+ LTS x86_64
+# Ubuntu 22.04+ LTS x86_64
 # Nextcloud latest
 # Carsten Rieger IT-Services (www.c-rieger.de)
 # Vielen Dank an:
@@ -67,8 +67,6 @@ BENUTZERNAME=$(logname)
 if [ "$(id -u)" != "0" ]
 then
 clear
-echo "****************************************"
-echo "* Installationsskript wird vorbereitet *"
 echo ""
 echo "*****************************"
 echo "* BITTE ALS ROOT AUSFÜHREN! *"
@@ -80,17 +78,21 @@ fi
 if [ "$(lsb_release -r | awk '{ print $2 }')" = "22.04" ]
 then
 clear
-echo "****************************************"
-echo "* Installationsskript wird vorbereitet *"
-echo "Test: Root ......:::: OK"
-echo "Test: Ubuntu 22.04 .: OK"
+echo "*************************************************"
+echo " * Pre-Installationschecks werden durchgefuehrt *"
+echo "*************************************************"
+echo ""
+echo "* Test: Root ...............:::::::::::::::: OK *"
+echo ""
+echo "* Test: Ubuntu 22.04 LTS .........:::::::::: OK *"
+echo ""
 sleep 2
 else
 clear
 echo ""
-echo "*****************************"
-echo "* Skript exkl. Ubuntu 22.04 *"
-echo "*****************************"
+echo "**************************************"
+echo "* Skript exklusiv nur fuer Ubuntu 22 *"
+echo "**************************************"
 echo ""
 exit 1
 fi
@@ -102,9 +104,9 @@ fi
 if [ ! -d "/home/$BENUTZERNAME/" ]; then
   echo "Benutzerverzeichnis existiert nicht. Wird erstellt..."
   mkdir /home/$BENUTZERNAME/
-  echo "Test: Benutzerverzeichnis : OK"
+  echo "* Test: Benutzerverzeichnis ........:::::::: OK *"
   else
-  echo "Test: Benutzerverzeichnis : OK"
+  echo "* Test: Benutzerverzeichnis ........:::::::: OK *"
   fi
 
 
@@ -116,13 +118,13 @@ if [ ! -d "/home/$BENUTZERNAME/" ]; then
   if [ ! -d "/home/$BENUTZERNAME/Nextcloud-Installationsskript/" ]; then
   echo "Installationsskript-Verzeichnis existiert nicht. Wird erstellt..."
   mkdir /home/$BENUTZERNAME/Nextcloud-Installationsskript/
-  echo "Test: Installationsskript-Verzeichnis : OK"
+  echo "* Test: Installationsskript-Verzeichnis ..:: OK *"
     else
-  echo "Test: Installationsskript-Verzeichnis : OK"
+  echo "* Test: Installationsskript-Verzeichnis ..:: OK *"
   fi
 
-  echo "*            Abgeschlossen             *"
-  echo "****************************************"
+  echo " * Pre-Installationschecks erfolgreich!         *"
+  echo "*************************************************"
 
 # ***************************************************************************************#
 
@@ -130,7 +132,7 @@ if [ ! -d "/home/$BENUTZERNAME/" ]; then
 RESOLVER=$(cat /etc/resolv.conf | grep "nameserver" | awk '{ print $2 }')
 
 # Lokale IP ermitteln
-IPA=$(ip addr | grep 'inet ' | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
+IPA=$(hostname -I | awk '{print $1}')
 
 ###########################
 # Systempfade auslesen    #
@@ -169,6 +171,33 @@ wget=$(which wget)
 ${touch} /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
 ${cat} <<EOF >/home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
 #!/bin/bash
+# Ausführung als ROOT überprüfen
+if [ "$(id -u)" != "0" ]
+then
+clear
+echo ""
+echo "*****************************"
+echo "* BITTE ALS ROOT AUSFÜHREN! *"
+echo "*****************************"
+echo ""
+exit 1
+fi
+clear
+echo "*************************************************************************************"
+echo "*                        WARNING! WARNING! WARNING!                                 *"
+echo "*                                                                                   *"
+echo "* Nextcloud as well as ALL user files will be IRREVERSIBLY REMOVED from the system! *"
+echo "*                                                                                   *"
+echo "*************************************************************************************"
+echo
+echo "Press Ctrl+C To Abort"
+echo
+seconds=$((10))
+while [ $seconds -gt 0 ]; do
+   echo -ne "Removal begins after: $seconds\033[0K\r"
+   sleep 1
+   : $((seconds--))
+done
 rm -Rf $NEXTCLOUDDATAPATH
 ${mv} /etc/hosts.bak /etc/hosts
 echo "Software entfernen..."
