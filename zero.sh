@@ -93,9 +93,9 @@ sleep 2
 else
 clear
 echo ""
-echo "*****************************"
-echo "* Skript exkl. für Ubuntu 22 *"
-echo "*****************************"
+echo "**************************************"
+echo "* Skript exklusiv nur fuer Ubuntu 22 *"
+echo "**************************************"
 echo ""
 exit 1
 fi
