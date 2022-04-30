@@ -79,7 +79,7 @@ if [ "$(lsb_release -r | awk '{ print $2 }')" = "22.04" ]
 then
 clear
 echo "*************************************************"
-echo " * Pre-Installationschecks werden durchgefuehrt *"
+echo "*  Pre-Installationschecks werden durchgefuehrt *"
 echo "*************************************************"
 echo ""
 echo "* Test: Root ...............:::::::::::::::: OK *"
@@ -102,11 +102,14 @@ fi
 # verzeichnis existiert   #
 ###########################
 if [ ! -d "/home/$BENUTZERNAME/" ]; then
-  echo "Benutzerverzeichnis existiert nicht. Wird erstellt..."
+  echo "* Erstelle: Benutzerverzeichnis ......:::::: OK *"
+  echo ""
   mkdir /home/$BENUTZERNAME/
   echo "* Test: Benutzerverzeichnis ........:::::::: OK *"
+  echo ""
   else
   echo "* Test: Benutzerverzeichnis ........:::::::: OK *"
+  echo ""
   fi
 
 
@@ -116,15 +119,19 @@ if [ ! -d "/home/$BENUTZERNAME/" ]; then
 # existiert               #
 ###########################
   if [ ! -d "/home/$BENUTZERNAME/Nextcloud-Installationsskript/" ]; then
-  echo "Installationsskript-Verzeichnis existiert nicht. Wird erstellt..."
+  echo "* Erstelle: Installationsskript-Verzeichnis  OK *"
+  echo ""
   mkdir /home/$BENUTZERNAME/Nextcloud-Installationsskript/
   echo "* Test: Installationsskript-Verzeichnis ..:: OK *"
+  echo ""
     else
   echo "* Test: Installationsskript-Verzeichnis ..:: OK *"
+  echo ""
   fi
 
-  echo " * Pre-Installationschecks erfolgreich!         *"
+  echo "*  Pre-Installationschecks erfolgreich!         *"
   echo "*************************************************"
+  echo ""
 
 # ***************************************************************************************#
 
