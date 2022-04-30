@@ -89,7 +89,7 @@ PHONEREGION='DE'
 
 # D: Soll eine zweite Netzwerkschnittstelle eingebunden werden,
 #    bspw. für ein vLAN: (ETH1): [y|n]
-# E: should a a second LAN interface being configured
+# E: should a second lan-interface be configured
 #    e.g. for a vLAN: (ETH1): [y|n]
 LAN2="n"
 
