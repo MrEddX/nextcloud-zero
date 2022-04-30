@@ -42,9 +42,9 @@ LETSENCRYPT="n"
 
 # Nextcloud Externe IP(v4), bspw.:
 # NEXTCLOUDEXTIP="123.124.125.120"
-NEXTCLOUDEXTIP="0.8.1.5"
+NEXTCLOUDEXTIP=$(dig +short txt ch whoami.cloudflare @1.0.0.1)
 
-# MariaDB-Root-Passwort, bspw.: 
+# MariaDB-Root-Passwort, bspw.:
 # MARIADBROOTPASSWORD="MaRiAdB-RooT-PwD"
 # oder automatisch generieren lassen
 MARIADBROOTPASSWORD=$(openssl rand -hex 16)
@@ -52,8 +52,14 @@ MARIADBROOTPASSWORD=$(openssl rand -hex 16)
 # Database MariaDB o. postgreSQL [m|p]
 DATABASE="m"
 
+# Time Zone
+CURRENTTIMEZONE='Europe/Berlin'
+
+# Phone Region
+PHONEREGION='DE'
+
 # 2. LAN-Interface (ETH1): [y|n]
-# Bspw. für vLAN's 
+# Bspw. für vLAN's
 LAN2="n"
 
 ###########################
@@ -165,10 +171,10 @@ echo
 echo "Press Ctrl+C To Abort"
 echo
 seconds=$((10))
-while [ $seconds -gt 0 ]; do
-   echo -ne "Removal begins after: $seconds\033[0K\r"
+while [ \$seconds -gt 0 ]; do
+   echo -ne "Removal begins after: \$seconds\033[0K\r"
    sleep 1
-   : $((seconds--))
+   : \$((seconds--))
 done
 rm -Rf $NEXTCLOUDDATAPATH
 ${mv} /etc/hosts.bak /etc/hosts
@@ -454,14 +460,14 @@ ${sed} -i 's/max_execution_time =.*/max_execution_time = 3600/' /etc/php/8.0/cli
 ${sed} -i 's/max_input_time =.*/max_input_time = 3600/' /etc/php/8.0/cli/php.ini
 ${sed} -i 's/post_max_size =.*/post_max_size = 10240M/' /etc/php/8.0/cli/php.ini
 ${sed} -i 's/upload_max_filesize =.*/upload_max_filesize = 10240M/' /etc/php/8.0/cli/php.ini
-${sed} -i 's/;date.timezone.*/date.timezone = Europe\/\Berlin/' /etc/php/8.0/cli/php.ini
+${sed} -i "s|;date.timezone.*|date.timezone = $CURRENTTIMEZONE|" /etc/php/8.0/cli/php.ini
 ${sed} -i 's/memory_limit = 128M/memory_limit = 2G/' /etc/php/8.0/fpm/php.ini
 ${sed} -i 's/output_buffering =.*/output_buffering = 'Off'/' /etc/php/8.0/fpm/php.ini
 ${sed} -i 's/max_execution_time =.*/max_execution_time = 3600/' /etc/php/8.0/fpm/php.ini
 ${sed} -i 's/max_input_time =.*/max_input_time = 3600/' /etc/php/8.0/fpm/php.ini
 ${sed} -i 's/post_max_size =.*/post_max_size = 10240M/' /etc/php/8.0/fpm/php.ini
 ${sed} -i 's/upload_max_filesize =.*/upload_max_filesize = 10240M/' /etc/php/8.0/fpm/php.ini
-${sed} -i 's/;date.timezone.*/date.timezone = Europe\/\Berlin/' /etc/php/8.0/fpm/php.ini
+${sed} -i "s|;date.timezone.*|date.timezone = $CURRENTTIMEZONE|" /etc/php/8.0/fpm/php.ini
 ${sed} -i 's/;session.cookie_secure.*/session.cookie_secure = True/' /etc/php/8.0/fpm/php.ini
 ${sed} -i 's/;opcache.enable=.*/opcache.enable=1/' /etc/php/8.0/fpm/php.ini
 ${sed} -i 's/;opcache.enable_cli=.*/opcache.enable_cli=1/' /etc/php/8.0/fpm/php.ini
@@ -865,7 +871,7 @@ array (
 2 => 'thumbs.db',
 ),
 'cron_log' => true,
-'default_phone_region' => 'DE',
+'default_phone_region' => '$PHONEREGION',
 'enable_previews' => true,
 'enabledPreviewProviders' =>
 array (
@@ -888,7 +894,7 @@ array (
 'log_rotate_size' => '104857600',
 'logfile' => '/var/log/nextcloud/nextcloud.log',
 'loglevel' => 2,
-'logtimezone' => 'Europe/Berlin',
+'logtimezone' => '$CURRENTTIMEZONE',
 'memcache.local' => '\\OC\\Memcache\\APCu',
 'memcache.locking' => '\\OC\\Memcache\\Redis',
 'overwriteprotocol' => 'https',
