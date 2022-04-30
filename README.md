@@ -7,7 +7,7 @@ Installieren Sie Ihren eigenen Nextcloud-Server in weniger als 10 Minuten.
 
 * Ubuntu 22.x (aktuell stehen noch nicht die aktuellen Repositories zur Verfügung!)
 * PHP (8.0) und NGINX (1.20.2) derzeit auf PPA umgestellt
-* MariaDB 10.6 direkt von Ubuntu 22
+* MariaDB 10.6/postgreSQL 14 direkt von Ubuntu 22
 
 <h2>INSTALLATION:</h2>
 
@@ -27,9 +27,9 @@ Installieren Sie Ihren eigenen Nextcloud-Server in weniger als 10 Minuten.
 <code>./zero.sh</code><br>
 
 <h2>DEINSTALLATION:</h2>
-Sofern Sie das Skript erneut ausführen möchten, so führen Sie bitte zuerst die Deinstallation durch:
-<code>./uninstall.sh</code><br>
-<code>rm -f uninstall.sh</code><br>
+Sofern Sie das Skript erneut ausführen möchten, so führen Sie bitte zuerst die Deinstallation durch:<br>
+<code>/home/*benutzer*/Nextcloud-Installationsskript/uninstall.sh</code><br>
+<code>rm -f /home/*benutzer*/Nextcloud-Installationsskript/uninstall.sh</code><br>
 
 Dabei werden alle Softwarepakete (inkl. DB) sowie alle Verzeichnisse und Daten aus der vorherigen Installation entfernt.
 Im Anschluss daran kann die Installation erneut durchgeführt werden.
@@ -38,7 +38,7 @@ Im Anschluss daran kann die Installation erneut durchgeführt werden.
 <code>./zero.sh</code><br>
 
 <h2>LOGDATEI:</h2>
-<code>nano /home/*benutzer*/install.log</code><br>
+<code>nano /home/*benutzer*/Nextcloud-Installationsskript/install.log</code><br>
 
 -----------------------------------------------------------------------------------
 
