@@ -182,7 +182,7 @@ ${touch} /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
 ${cat} <<EOF >/home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
 #!/bin/bash
 # Ausführung als ROOT überprüfen
-if [ "$(id -u)" != "0" ]
+if [ "\$(id -u)" != "0" ]
 then
 clear
 echo ""
