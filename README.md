@@ -1,6 +1,6 @@
 # Neues Nextcloud Auto-Installerskript // New Nextcloud Installation script
-Installieren Sie Ihren eigenen Nextcloud-Server in weniger als 10 Minuten.
-Install your own Nextcloud server in less than 10 minutes.
+D: Installieren Sie Ihren eigenen Nextcloud-Server in weniger als 10 Minuten.<br>
+E: Install your own Nextcloud server in less than 10 minutes.
 
 <h2>Bis zur Fertigstellung: PRIVATE ONLY</h2>
 <h2>Basis f. Ubuntu 22 u. Nextcloud 24</h2>
