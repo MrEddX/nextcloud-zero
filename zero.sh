@@ -94,7 +94,7 @@ PHONEREGION='DE'
 LAN2="n"
 
 ###########################
-# Installationsskript     #
+# D: Start                #
 ###########################
 
 # D: Linuxbenutzer ermitteln
