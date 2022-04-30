@@ -113,15 +113,14 @@ if [ ! -d "/home/$BENUTZERNAME/" ]; then
   mkdir /home/$BENUTZERNAME/
   echo "* Test: Benutzerverzeichnis ........:::::::: OK *"
   echo ""
-  else
+    else
   echo "* Test: Benutzerverzeichnis ........:::::::: OK *"
   echo ""
   fi
 
-
 ###########################
 # Prüfen ob Installations-#
-# Script-verzeichnis      #
+# scriptverzeichnis       #
 # existiert               #
 ###########################
   if [ ! -d "/home/$BENUTZERNAME/Nextcloud-Installationsskript/" ]; then
@@ -134,12 +133,10 @@ if [ ! -d "/home/$BENUTZERNAME/" ]; then
   echo "* Test: Installationsskript-Verzeichnis ..:: OK *"
   echo ""
   fi
-
+  echo "*************************************************"
   echo "*  Pre-Installationschecks erfolgreich!         *"
   echo "*************************************************"
   echo ""
-
-# ***************************************************************************************#
 
 # Namensauflösung ermitteln
 RESOLVER=$(cat /etc/resolv.conf | grep "nameserver" | awk '{ print $2 }')
@@ -215,7 +212,7 @@ rm -Rf $NEXTCLOUDDATAPATH
 ${mv} /etc/hosts.bak /etc/hosts
 echo "Software entfernen..."
 apt remove --purge --allow-change-held-packages -y nginx* php* mariadb-* mysql-common libdbd-mariadb-perl galera-* postgresql-* redis* fail2ban ufw
-rm -Rf /etc/ufw /etc/fail2ban /var/www /etc/mysql /etc/postgresql /etc/postgresql-common /var/lib/mysql /var/lib/postgresql /etc/letsencrypt /var/log/nextcloud /home/$BENUTZERNAME/Nextcloud-Installationsskript/install.log /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh /home/$BENUTZERNAME/Nextcloud-Installationsskript/mariadb_repo_setup
+rm -Rf /etc/ufw /etc/fail2ban /var/www /etc/mysql /etc/postgresql /etc/postgresql-common /var/lib/mysql /var/lib/postgresql /etc/letsencrypt /var/log/nextcloud /home/$BENUTZERNAME/Nextcloud-Installationsskript/install.log /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
 ${addaptrepository} ppa:ondrej/php -ry
 ${addaptrepository} ppa:ondrej/nginx -ry
 rm -f /etc/ssl/certs/dhparam.pem /etc/apt/sources.list.d/* /etc/motd /root/.bash_aliases
