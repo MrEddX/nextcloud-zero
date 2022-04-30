@@ -136,6 +136,33 @@ wget=$(which wget)
 ${touch} /home/$BENUTZERNAME/uninstall.sh
 ${cat} <<EOF >/home/$BENUTZERNAME/uninstall.sh
 #!/bin/bash
+# Ausführung als ROOT überprüfen
+if [ "$(id -u)" != "0" ]
+then
+clear
+echo ""
+echo "*****************************"
+echo "* BITTE ALS ROOT AUSFÜHREN! *"
+echo "*****************************"
+echo ""
+exit 1
+fi
+clear
+echo "*************************************************************************************"
+echo "*                        WARNING! WARNING! WARNING!                                 *"
+echo "*                                                                                   *"
+echo "* Nextcloud as well as ALL user files will be IRREVERSIBLY REMOVED from the system! *"
+echo "*                                                                                   *"
+echo "*************************************************************************************"
+echo
+echo "Press Ctrl+C To Abort"
+echo
+seconds=$((30))
+while [ $seconds -gt 0 ]; do
+   echo -ne "Removal begins after: $seconds\033[0K\r"
+   sleep 1
+   : $((seconds--))
+done
 rm -Rf $NEXTCLOUDDATAPATH
 ${mv} /etc/hosts.bak /etc/hosts
 echo "Software entfernen..."
