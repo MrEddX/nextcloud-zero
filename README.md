@@ -18,6 +18,7 @@ E: Install your own Nextcloud server in less than 10 minutes.
 <code>cp nextcloud-zero/zero.sh .</code><br>
 <code>chmod +x zero.sh*.sh</code><br> <br>
 <h3>D/E: Konfigurationsvariablen anpassen / modify configuration variables:</h3></code><br>
+<code>nano zero.sh</code><br> <br>
 <code>NEXTCLOUDDATAPATH="/data"</code><br>
 <code>NEXTCLOUDADMINUSER="nc_admin"</code><br>
 <code>NEXTCLOUDADMINUSERPASSWORD=$(openssl rand -hex 16)</code><br>
