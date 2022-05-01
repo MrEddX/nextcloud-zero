@@ -1118,9 +1118,10 @@ ${clear}
 nextcloud_scan_data
 ${service} nginx restart
 ${echo} ""
-${echo} "Systemoptimierungen"
+${echo} "Systemoptimierungen / System optimizations"
 ${echo} ""
 ${echo} "Dieser Vorgang kann mehrere Minuten dauern - bitte haben Sie Geduld!"
+${echo} "It will take a few minutes - please be patient!"
 ${echo} ""
 ${sudo} -u www-data /usr/bin/php -f /var/www/nextcloud/cron.php & CrI
 
