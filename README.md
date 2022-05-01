@@ -7,7 +7,10 @@ E: Install your own Nextcloud server in less than 10 minutes.
 * Ubuntu 20.04 LTS / 22.04 LTS x86_64
 * NGINX 1.2x from PPA
 * PHP 8.x from PPA
-* MariaDB 10.x/postgreSQL 14 from Ubuntu 20.04 LTS / 22.04 LTS
+* Auswahl / Option: MariaDB // postgreSQL
+* Auswahl / Option: Self-signed // Let's Encrypt certificates
+* Auswahl / Option: Nextcloud Release
+* etc...
 
 <h2>INSTALLATION:</h2>
 
