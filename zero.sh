@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################################################################
 # Ubuntu 22.04+ LTS x86_64
-# Nextcloud latest
+# Nextcloud 23+ and 24+ (if released!)
 # Carsten Rieger IT-Services (www.c-rieger.de)
 # Vielen Dank an / many thanks to:
 # https://github.com/MrEddX
@@ -96,12 +96,6 @@ CURRENTTIMEZONE='Europe/Berlin'
 # D: Welche Region (Sprache) soll für die Nextcloud Phone Region gesetzt werden?
 # E: Which region is to be se for the "Nextcloud Phone Region"
 PHONEREGION='DE'
-
-# D: Soll eine zweite Netzwerkschnittstelle eingebunden werden,
-#    bspw. für ein vLAN: (ETH1): [y|n]
-# E: should a second lan-interface be configured
-#    e.g. for a vLAN: (ETH1): [y|n]
-LAN2="n"
 
 #########################################################################
 ### ! DO NOT CHANGE ANYTHING FROM HERE! // KEINE ÄNDERUNGEN AB HIER ! ###
@@ -1145,23 +1139,6 @@ EOF
 ${sed} -i '/ssl-cert-snakeoil/d' /etc/nginx/conf.d/nextcloud.conf
 ${sed} -i s/#\ssl/\ssl/g /etc/nginx/conf.d/nextcloud.conf
 ${service} nginx restart
-fi
-
-###########################
-# LAN-Interface 2         #
-###########################
-if [ $LAN2 == "y" ]
-then
-if [ ! -f /etc/netplan/eth1.yaml ]; then ${touch} /etc/netplan/eth1.yaml; fi
-${cat} <<EOF >/etc/netplan/eth1.yaml
-# This is the network config written by 'subiquity'
-network:
-  ethernets:
-    eth1:
-      dhcp4: true
-  version: 2
-EOF
-/usr/sbin/netplan apply
 fi
 
 ###########################
