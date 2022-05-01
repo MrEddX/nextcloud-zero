@@ -139,10 +139,10 @@ echo ""
 else
 clear
 echo ""
-echo "*************************************"
-echo "* Sie verwenden kein Ubuntu 22      *"
-echo "* You aren't operating on Ubuntu 22 *"
-echo "*************************************"
+echo "****************************************"
+echo "*   Sie verwenden kein Ubuntu 20/22    *"
+echo "* You aren't operating on Ubuntu 20/22 *"
+echo "****************************************"
 echo ""
 exit 1
 fi
