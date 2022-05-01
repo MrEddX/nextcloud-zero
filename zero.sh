@@ -124,7 +124,7 @@ echo ""
 exit 1
 fi
 
-if [ "$(lsb_release -r | awk '{ print $2 }')" = "22.04" ]
+if [ "$(lsb_release -r | awk '{ print $2 }')" = "20.04" ] || [ "$(lsb_release -r | awk '{ print $2 }')" = "22.04" ]
 then
 clear
 echo "*************************************************"
@@ -134,7 +134,7 @@ echo "*************************************************"
 echo ""
 echo "* Test: Root ...............:::::::::::::::: OK *"
 echo ""
-echo "* Test: Ubuntu 22.04 LTS .........:::::::::: OK *"
+echo "* Test: Ubuntu 2X.04 LTS .........:::::::::: OK *"
 echo ""
 else
 clear
