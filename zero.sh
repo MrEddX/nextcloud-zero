@@ -680,6 +680,10 @@ quote-names
 [isamchk]
 key_buffer = 16M
 EOF
+if [ "$(lsb_release -r | awk '{ print $2 }')" = "20.04" ]
+then
+sed -i '/innodb_read_only_compressed=OFF/d' /etc/mysql/my.cnf
+fi
 ${service} mysql restart
 mysql=$(which mysql)
 ${mysql} -e "CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
