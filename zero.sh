@@ -748,124 +748,130 @@ ${cat} <<EOF >/etc/nginx/conf.d/http.conf
 upstream php-handler {
   server unix:/run/php/php8.0-fpm.sock;
   }
-  server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name cloud.server.io;
-    root /var/www;
-    location ^~ /.well-known/acme-challenge {
-      default_type text/plain;
-      root /var/www/letsencrypt;
-      }
-    location / {
-      return 301 https://\$host\$request_uri;
-      }
-   }
+map \$arg_v \$asset_immutable {
+  "" "";
+  default "immutable";
+  }
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  server_name cloud.server.io;
+  root /var/www;
+  location ^~ /.well-known/acme-challenge {
+    default_type text/plain;
+    root /var/www/letsencrypt;
+    }
+  location / {
+    return 301 https://\$host\$request_uri;
+    }
+}
 EOF
 ### MUSS für Nextcloud 24 angepasst werden!
 ${cat} <<EOF >/etc/nginx/conf.d/nextcloud.conf
 server {
-  listen 443 ssl http2 default_server;
-  listen [::]:443 ssl http2 default_server;
-  server_name cloud.server.io;
-  ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
-  ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
-  ssl_trusted_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
-  #ssl_certificate /etc/letsencrypt/rsa-certs/fullchain.pem;
-  #ssl_certificate_key /etc/letsencrypt/rsa-certs/privkey.pem;
-  #ssl_certificate /etc/letsencrypt/ecc-certs/fullchain.pem;
-  #ssl_certificate_key /etc/letsencrypt/ecc-certs/privkey.pem;
-  #ssl_trusted_certificate /etc/letsencrypt/ecc-certs/chain.pem;
-  ssl_dhparam /etc/ssl/certs/dhparam.pem;
-  ssl_session_timeout 1d;
-  ssl_session_cache shared:SSL:50m;
-  ssl_session_tickets off;
-  ssl_protocols TLSv1.3 TLSv1.2;
-  ssl_ciphers 'TLS-CHACHA20-POLY1305-SHA256:TLS-AES-256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384';
-  ssl_ecdh_curve X448:secp521r1:secp384r1;
-  ssl_prefer_server_ciphers on;
-  ssl_stapling on;
-  ssl_stapling_verify on;
-  client_max_body_size 10G;
-  client_body_timeout 3600s;
-  fastcgi_buffers 64 4K;
-  gzip on;
-  gzip_vary on;
-  gzip_comp_level 4;
-  gzip_min_length 256;
-  gzip_proxied expired no-cache no-store private no_last_modified no_etag auth;
-  gzip_types application/atom+xml application/javascript application/json application/ld+json application/manifest+json application/rss+xml application/vnd.geo+json application/vnd.ms-fontobject application/wasm application/x-font-ttf application/x-web-app-manifest+json application/xhtml+xml application/xml font/opentype image/bmp image/svg+xml image/x-icon text/cache-manifest text/css text/plain text/vcard text/vnd.rim.location.xloc text/vtt text/x-component text/x-cross-domain-policy;
-  add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
-  add_header Permissions-Policy "interest-cohort=()";
-  add_header Referrer-Policy "no-referrer" always;
-  add_header X-Content-Type-Options "nosniff" always;
-  add_header X-Download-Options "noopen" always;
-  add_header X-Frame-Options "SAMEORIGIN" always;
-  add_header X-Permitted-Cross-Domain-Policies "none" always;
-  add_header X-Robots-Tag "none" always;
-  add_header X-XSS-Protection "1; mode=block" always;
-  fastcgi_hide_header X-Powered-By;
-  root /var/www/nextcloud;
-  index index.php index.html /index.php\$request_uri;
-  location = / {
-    if ( \$http_user_agent ~ ^DavClnt ) {
-      return 302 /remote.php/webdav/\$is_args\$args;
-      }
-  }
-  location = /robots.txt {
-    allow all;
-    log_not_found off;
-    access_log off;
-    }
-  location ^~ /apps/rainloop/app/data {
-    deny all;
-    }
-  location ^~ /.well-known {
-    location = /.well-known/carddav { return 301 /remote.php/dav/; }
-    location = /.well-known/caldav  { return 301 /remote.php/dav/; }
-    location /.well-known/acme-challenge { try_files \$uri \$uri/ =404; }
-    location /.well-known/pki-validation { try_files \$uri \$uri/ =404; }
-    return 301 /index.php\$request_uri;
-    }
-  location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)(?:\$|/)  { return 404; }
-  location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console)  { return 404; }
-  location ~ \.php(?:\$|/) {
-    rewrite ^/(?!index|test|remote|public|cron|core\/ajax\/update|status|ocs\/v[12]|updater\/.+|oc[ms]-provider\/.+|.+\/richdocumentscode\/proxy) /index.php\$request_uri;
-    fastcgi_split_path_info ^(.+?\.php)(/.*)\$;
-    set \$path_info \$fastcgi_path_info;
-    try_files \$fastcgi_script_name =404;
-    include fastcgi_params;
-    fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-    fastcgi_param PATH_INFO \$path_info;
-    fastcgi_param HTTPS on;
-    fastcgi_param modHeadersAvailable true;
-    fastcgi_param front_controller_active true;
-    fastcgi_pass php-handler;
-    fastcgi_intercept_errors on;
-    fastcgi_request_buffering off;
-    fastcgi_read_timeout 3600;
-    fastcgi_send_timeout 3600;
-    fastcgi_connect_timeout 3600;
-    }
-  location ~ \.(?:css|js|svg|gif|png|jpg|ico|wasm|tflite)\$ {
-    try_files \$uri /index.php\$request_uri;
-    expires 6M;
-    access_log off;
-    location ~ \.wasm\$ {
-      default_type application/wasm;
-      }
-    }
-  location ~ \.woff2?\$ {
-    try_files \$uri /index.php\$request_uri;
-    expires 7d;
-    access_log off;
-    }
-  location /remote {
-    return 301 /remote.php\$request_uri;
-    }
-  location / {
-    try_files \$uri \$uri/ /index.php\$request_uri;
-    }
+listen 443      ssl http2;
+listen [::]:443 ssl http2;
+server_name cloud.server.io;
+ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
+ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
+ssl_trusted_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
+#ssl_certificate /etc/letsencrypt/rsa-certs/fullchain.pem;
+#ssl_certificate_key /etc/letsencrypt/rsa-certs/privkey.pem;
+#ssl_certificate /etc/letsencrypt/ecc-certs/fullchain.pem;
+#ssl_certificate_key /etc/letsencrypt/ecc-certs/privkey.pem;
+#ssl_trusted_certificate /etc/letsencrypt/ecc-certs/chain.pem;
+ssl_dhparam /etc/ssl/certs/dhparam.pem;
+ssl_session_timeout 1d;
+ssl_session_cache shared:SSL:50m;
+ssl_session_tickets off;
+ssl_protocols TLSv1.3 TLSv1.2;
+ssl_ciphers 'TLS-CHACHA20-POLY1305-SHA256:TLS-AES-256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384';
+ssl_ecdh_curve X448:secp521r1:secp384r1;
+ssl_prefer_server_ciphers on;
+ssl_stapling on;
+ssl_stapling_verify on;
+client_max_body_size 10G;
+client_body_timeout 3600s;
+fastcgi_buffers 64 4K;
+gzip on;
+gzip_vary on;
+gzip_comp_level 4;
+gzip_min_length 256;
+gzip_proxied expired no-cache no-store private no_last_modified no_etag auth;
+gzip_types application/atom+xml application/javascript application/json application/ld+json application/manifest+json application/rss+xml application/vnd.geo+json application/vnd.ms-fontobject application/wasm application/x-font-ttf application/x-web-app-manifest+json application/xhtml+xml application/xml font/opentype image/bmp image/svg+xml image/x-icon text/cache-manifest text/css text/plain text/vcard text/vnd.rim.location.xloc text/vtt text/x-component text/x-cross-domain-policy;
+add_header Strict-Transport-Security            "max-age=15768000; includeSubDomains; preload;" always;
+add_header Permissions-Policy                   "interest-cohort=()";
+add_header Referrer-Policy                      "no-referrer"   always;
+add_header X-Content-Type-Options               "nosniff"       always;
+add_header X-Download-Options                   "noopen"        always;
+add_header X-Frame-Options                      "SAMEORIGIN"    always;
+add_header X-Permitted-Cross-Domain-Policies    "none"          always;
+add_header X-Robots-Tag                         "none"          always;
+add_header X-XSS-Protection                     "1; mode=block" always;
+fastcgi_hide_header X-Powered-By;
+root /var/www/nextcloud;
+index index.php index.html /index.php\$request_uri;
+location = / {
+if ( \$http_user_agent ~ ^DavClnt ) {
+return 302 /remote.php/webdav/\$is_args\$args;
+}
+}
+location = /robots.txt {
+allow all;
+log_not_found off;
+access_log off;
+}
+location ^~ /apps/rainloop/app/data {
+deny all;
+}
+location ^~ /.well-known {
+location = /.well-known/carddav { return 301 /remote.php/dav/; }
+location = /.well-known/caldav  { return 301 /remote.php/dav/; }
+location /.well-known/acme-challenge { try_files \$uri \$uri/ =404; }
+location /.well-known/pki-validation { try_files \$uri \$uri/ =404; }
+return 301 /index.php\$request_uri;
+}
+location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)(?:\$|/)  { return 404; }
+location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }
+location ~ \.php(?:\$|/) {
+rewrite ^/(?!index|remote|public|cron|core\/ajax\/update|status|ocs\/v[12]|updater\/.+|oc[ms]-provider\/.+|.+\/richdocumentscode\/proxy) /index.php\$request_uri;
+fastcgi_split_path_info ^(.+?\.php)(/.*)\$;
+set \$path_info \$fastcgi_path_info;
+try_files \$fastcgi_script_name =404;
+include fastcgi_params;
+fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+fastcgi_param PATH_INFO \$path_info;
+fastcgi_param HTTPS on;
+fastcgi_param modHeadersAvailable true;
+fastcgi_param front_controller_active true;
+fastcgi_pass php-handler;
+fastcgi_intercept_errors on;	
+fastcgi_request_buffering off;
+fastcgi_read_timeout 3600;
+fastcgi_send_timeout 3600;
+fastcgi_connect_timeout 3600;
+fastcgi_max_temp_file_size 0;
+}
+location ~ \.(?:css|js|svg|gif|png|jpg|ico|wasm|tflite|map)\$ {
+try_files \$uri /index.php\$request_uri;
+add_header Cache-Control "public, max-age=15778463, \$asset_immutable";
+expires 6M;
+access_log off;
+location ~ \.wasm\$ {
+default_type application/wasm;
+}
+}
+location ~ \.woff2?\$ {
+try_files \$uri /index.php\$request_uri;
+expires 7d;
+access_log off;
+}
+location /remote {
+return 301 /remote.php\$request_uri;
+}
+location / {
+try_files \$uri \$uri/ /index.php\$request_uri;
+}
 }
 EOF
 ${clear}
