@@ -185,7 +185,7 @@ RESOLVER=$(cat /etc/resolv.conf | grep "nameserver" | awk '{ print $2 }')
 
 ###########################
 # D: Lokale IP ermitteln  #
-# E: identify local ip    #
+# E: Identify local ip    #
 ###########################
 IPA=$(hostname -I | awk '{print $1}')
 
@@ -1194,7 +1194,6 @@ ${sudo} -u www-data ${touch} /var/log/nextcloud/nextcloud.log
 ###########################
 # occ Aliases (nocc)      #
 ###########################
-if [ ! -f /root/.bash_aliases ]; then ${touch} /root/.bash_aliases; fi
 ${cat} <<EOF >> /root/.bash_aliases
 alias nocc="${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ"
 EOF
