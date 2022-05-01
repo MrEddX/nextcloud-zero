@@ -34,7 +34,7 @@ NEXTCLOUDADMINUSER="nc_admin"
 NEXTCLOUDADMINUSERPASSWORD=$(openssl rand -hex 16)
 
 # Nextcloud Release (https://nextcloud.com/changelog/)
-# D: bspw. NCRELEASE="nextcloud-23.0.4.tar.bz2" 
+# D: bspw. NCRELEASE="nextcloud-23.0.4.tar.bz2"
 #    oder das aktuelle/letzte (latest.tar.bz2) Release:
 # E: e.g. NCRELEASE="nextcloud-23.0.4.tar.bz2"
 #    or the current/latest (latest.tar.bz2) release:
@@ -46,7 +46,7 @@ NCRELEASE="latest.tar.bz2"
 #    von Let's Encrypt automatisch eingebunden
 # E: Your Nextcloud daomain without (!) https
 #    If the parameter LETSENCRYPT="y" is set
-#    ssl/tls certificates will be requested 
+#    ssl/tls certificates will be requested
 #    and embedded from Let's Encrypt
 NEXTCLOUDDNS="ihre.domain.de"
 
@@ -102,7 +102,7 @@ PHONEREGION='DE'
 #########################################################################
 
 ###########################
-# Start/Beginn            #
+# Start/Begin            #
 ###########################
 
 # D: Linuxbenutzer ermitteln
@@ -155,11 +155,11 @@ if [ ! -d "/home/$BENUTZERNAME/" ]; then
   echo "* Erstelle:  Benutzerverzeichnis .....:::::: OK *"
   echo "* Creating:  Home Directory ..........:::::: OK *"
   echo ""
-  mkdir /home/$BENUTZERNAME/
+  mkdir /home/"$BENUTZERNAME"/
   echo "* Test: Benutzerverzeichnis ........:::::::: OK *"
   echo "* Test: Home directory ..........::::::::::: OK *"
   echo ""
-    else
+  else
   echo "* Test: Benutzerverzeichnis ........:::::::: OK *"
   echo "* Test: Home directory ..........::::::::::: OK *"
   echo ""
@@ -169,7 +169,7 @@ if [ ! -d "/home/$BENUTZERNAME/Nextcloud-Installationsskript/" ]; then
   echo "* Erstelle: Installationsskript-Verzeichnis: OK *"
   echo "* Creating: Install directory .......::::::: OK *"
   echo ""
-  mkdir /home/$BENUTZERNAME/Nextcloud-Installationsskript/
+  mkdir /home/"$BENUTZERNAME"/Nextcloud-Installationsskript/
   echo "* Test: Installationsskript-Verzeichnis ..:: OK *"
   echo "* Test: Installscript directory .....::::::: OK *"
   echo ""
@@ -180,7 +180,7 @@ if [ ! -d "/home/$BENUTZERNAME/Nextcloud-Installationsskript/" ]; then
   fi
   echo "*************************************************"
   echo "*  Pre-Installationschecks erfolgreich!         *"
-  echo "*  Pre-Installation checks successfull!         *"  
+  echo "*  Pre-Installation checks successfull!         *"
   echo "*************************************************"
   echo ""
   sleep 3
@@ -189,7 +189,7 @@ if [ ! -d "/home/$BENUTZERNAME/Nextcloud-Installationsskript/" ]; then
 # D: Resolver ermitteln   #
 # E: Identify the resolver#
 ###########################
-RESOLVER=$(cat /etc/resolv.conf | grep "nameserver" | awk '{ print $2 }')
+RESOLVER=$(grep "nameserver" /etc/resolv.conf| awk '{ print $2 }')
 
 ###########################
 # D: Lokale IP ermitteln  #
@@ -199,40 +199,41 @@ IPA=$(hostname -I | awk '{print $1}')
 
 ###########################
 # D: Systempfade auslesen #
-# E: System pathes        #
+# E: System patches       #
 ###########################
-addaptrepository=$(which add-apt-repository)
-adduser=$(which adduser)
-apt=$(which apt-get)
-aptkey=$(which apt-key)
-aptmark=$(which apt-mark)
-cat=$(which cat)
-chmod=$(which chmod)
-chown=$(which chown)
-clear=$(which clear)
-cp=$(which cp)
-curl=$(which curl)
-echo=$(which echo)
-ip=$(which ip)
-ln=$(which ln)
-mkdir=$(which mkdir)
-mv=$(which mv)
-rm=$(which rm)
-sed=$(which sed)
-service=$(which service)
-sudo=$(which sudo)
-su=$(which su)
-systemctl=$(which systemctl)
-tar=$(which tar)
-touch=$(which touch)
-usermod=$(which usermod)
-wget=$(which wget)
+addaptrepository=$(command -v add-apt-repository)
+adduser=$(command -v adduser)
+apt=$(command -v apt-get)
+aptkey=$(command -v apt-key)
+aptmark=$(command -v apt-mark)
+cat=$(command -v cat)
+chmod=$(command -v chmod)
+chown=$(command -v chown)
+clear=$(command -v clear)
+cp=$(command -v cp)
+curl=$(command -v curl)
+echo=$(command -v echo)
+ip=$(command -v ip)
+ln=$(command -v ln)
+mysql_secure_installation=$(command -v mysql_secure_installation)
+mkdir=$(command -v mkdir)
+mv=$(command -v mv)
+rm=$(command -v rm)
+sed=$(command -v sed)
+service=$(command -v service)
+sudo=$(command -v sudo)
+su=$(command -v su)
+systemctl=$(command -v systemctl)
+tar=$(command -v tar)
+touch=$(command -v touch)
+usermod=$(command -v usermod)
+wget=$(command -v wget)
 
 ###########################
 # Uninstall-Skript        #
 ###########################
-${touch} /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
-${cat} <<EOF >/home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
+${touch} /home/"$BENUTZERNAME"/Nextcloud-Installationsskript/uninstall.sh
+${cat} <<EOF >/home/"$BENUTZERNAME"/Nextcloud-Installationsskript/uninstall.sh
 #!/bin/bash
 if [ "\$(id -u)" != "0" ]
 then
@@ -275,11 +276,12 @@ crontab -u www-data -r
 ${rm} -f /etc/sudoers.d/acmeuser
 ${apt} autoremove -y
 ${apt} autoclean -y
+${sed} -i '/vm.overcommit_memory = 1/d' /etc/sysctl.conf
 echo ""
 echo "Done!"
 exit 0
 EOF
-${chmod} +x /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
+${chmod} +x /home/"$BENUTZERNAME"/Nextcloud-Installationsskript/uninstall.sh
 
 ###########################
 # D: Hostdatei anpassen   #
@@ -297,7 +299,7 @@ EOF
 # E: System settings      #
 ###########################
 ${apt} install -y figlet
-figlet=$(which figlet)
+figlet=$(command -v figlet)
 ${touch} /etc/motd
 ${figlet} Nextcloud > /etc/motd
 ${cat} <<EOF >> /etc/motd
@@ -582,7 +584,7 @@ ${sed} -i 's/rights=\"none\" pattern=\"PS\"/rights=\"read|write\" pattern=\"PS\"
 ${sed} -i 's/rights=\"none\" pattern=\"EPS\"/rights=\"read|write\" pattern=\"EPS\"/' /etc/ImageMagick-6/policy.xml
 ${sed} -i 's/rights=\"none\" pattern=\"PDF\"/rights=\"read|write\" pattern=\"PDF\"/' /etc/ImageMagick-6/policy.xml
 ${sed} -i 's/rights=\"none\" pattern=\"XPS\"/rights=\"read|write\" pattern=\"XPS\"/' /etc/ImageMagick-6/policy.xml
-/usr/bin/ln -s /usr/local/bin/gs /usr/bin/gs
+${ln} -s /usr/local/bin/gs /usr/bin/gs
 
 ###########################
 # Neustart/Restart PHP    #
@@ -685,7 +687,7 @@ then
 sed -i '/innodb_read_only_compressed=OFF/d' /etc/mysql/my.cnf
 fi
 ${service} mysql restart
-mysql=$(which mysql)
+mysql=$(command -v mysql)
 ${mysql} -e "CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
 ${mysql} -e "CREATE USER ${NCDBUSER}@localhost IDENTIFIED BY '${NCDBPASSWORD}';"
 ${mysql} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO '${NCDBUSER}'@'localhost';"
@@ -952,10 +954,10 @@ YOURSERVERNAME=$(hostname)
 # Nextcloud config.php    #
 ###########################
 ${sudo} -u www-data ${cp} /var/www/nextcloud/config/config.php /var/www/nextcloud/config/config.php.bak
-${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ config:system:set trusted_domains 0 --value=$YOURSERVERNAME
-${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ config:system:set trusted_domains 1 --value=$NEXTCLOUDDNS
-${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ config:system:set trusted_domains 2 --value=$IPA
-${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ config:system:set overwrite.cli.url --value=https://$NEXTCLOUDDNS
+${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ config:system:set trusted_domains 0 --value="$YOURSERVERNAME"
+${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ config:system:set trusted_domains 1 --value="$NEXTCLOUDDNS"
+${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ config:system:set trusted_domains 2 --value="$IPA"
+${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ config:system:set overwrite.cli.url --value=https://"$NEXTCLOUDDNS"
 ${echo} ""
 ${echo} "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 ${cp} /var/www/nextcloud/.user.ini /usr/local/src/.user.ini.bak
@@ -1074,11 +1076,11 @@ ${echo} "ufw-Installation"
 ${echo} ""
 sleep 3
 ${apt} install -y ufw --allow-change-held-packages
-ufw=$(which ufw)
+ufw=$(command -v ufw)
 ${ufw} allow 80/tcp comment "LetsEncrypt(http)"
 ${ufw} allow 443/tcp comment "TLS(https)"
-SSHPORT=`grep -w Port /etc/ssh/sshd_config | awk '/Port/ {print $2}'`
-${ufw} allow $SSHPORT/tcp comment "SSH"
+SSHPORT=$(grep -w Port /etc/ssh/sshd_config | awk '/Port/ {print $2}')
+${ufw} allow "$SSHPORT"/tcp comment "SSH"
 ${ufw} logging medium && ${ufw} default deny incoming
 ${cat} <<EOF | ${ufw} enable
 y
@@ -1103,7 +1105,7 @@ ${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ config:app:set settings 
 ${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ app:enable admin_audit
 ${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ app:enable files_pdfviewer
 ${sudo} -u www-data /usr/bin/php /var/www/nextcloud/occ app:enable contacts
-rediscli=$(which redis-cli)
+rediscli=$(command -v redis-cli)
 ${rediscli} -s /var/run/redis/redis-server.sock <<EOF
 FLUSHALL
 quit
@@ -1157,7 +1159,7 @@ ${echo} "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ${echo} ""
 ${echo} "Server - IP(v4):"
 ${echo} "----------------"
-${echo} $IPA
+${echo} "$IPA"
 ${echo} ""
 ${echo} "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 ${echo} ""
@@ -1167,24 +1169,23 @@ ${echo} "https://$NEXTCLOUDDNS oder/or https://$IPA"
 ${echo} ""
 ${echo} "*******************************************************************************"
 ${echo} ""
-${echo} "Nextcloud User/Pwd: "$NEXTCLOUDADMINUSER" // "$NEXTCLOUDADMINUSERPASSWORD
+${echo} "Nextcloud User/Pwd: $NEXTCLOUDADMINUSER // $NEXTCLOUDADMINUSERPASSWORD"
 ${echo} ""
-${echo} "Passwordreset     : nocc user:resetpassword" $NEXTCLOUDADMINUSER
+${echo} "Passwordreset     : nocc user:resetpassword $NEXTCLOUDADMINUSER"
 ${echo} ""
-${echo} "Nextcloud datapath: "$NEXTCLOUDDATAPATH
+${echo} "Nextcloud datapath: $NEXTCLOUDDATAPATH"
 ${echo} ""
 ${echo} "Nextcloud DB      : nextcloud"
-${echo} "Nextcloud DB-User : "$NCDBUSER" / "$NCDBPASSWORD
+${echo} "Nextcloud DB-User : $NCDBUSER / $NCDBPASSWORD"
 if [ $DATABASE == "m" ]
 then
 ${echo} ""
-${echo} "MariaDB-Rootpwd   : "$MARIADBROOTPASSWORD
+${echo} "MariaDB-Rootpwd   : $MARIADBROOTPASSWORD"
 fi
 ${echo} ""
 ${echo} "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 ${echo} ""
-figl=$(which figlet)
-${figl} '(c) c-rieger.de'
+${figlet} '(c) c-rieger.de'
 ${echo} ""
 ${echo} "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 ${echo} ""
@@ -1206,8 +1207,8 @@ EOF
 # D: Update-Skript anlegen#
 # E: Create Update-Script #
 ###########################
-${touch} /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
-${cat} <<EOF >/home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
+${touch} /home/"$BENUTZERNAME"/Nextcloud-Installationsskript/update.sh
+${cat} <<EOF >/home/"$BENUTZERNAME"/Nextcloud-Installationsskript/update.sh
 #!/bin/bash
 apt-get update
 apt-get upgrade -V
@@ -1228,7 +1229,7 @@ sudo -u www-data php /var/www/nextcloud/occ app:update --all
 if [ -e /var/run/reboot-required ]; then echo "*** NEUSTART ERFORDERLICH *** / *** REBOOT REQUIRED ***";fi
 exit 0
 EOF
-${chmod} +x /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
+${chmod} +x /home/"$BENUTZERNAME"/Nextcloud-Installationsskript/update.sh
 
 ###########################
 # Bereinigung/Clean Up    #
