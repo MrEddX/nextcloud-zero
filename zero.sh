@@ -108,7 +108,7 @@ PHONEREGION='DE'
 LAN2="n"
 
 ###########################
-# D: Start                #
+# Start/Beginn            #
 ###########################
 
 # D: Linuxbenutzer ermitteln
