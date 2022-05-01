@@ -228,49 +228,48 @@ ${cat} <<EOF >/home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
 #!/bin/bash
 if [ "\$(id -u)" != "0" ]
 then
-clear
-echo ""
-echo "*****************************"
-echo "* BITTE ALS ROOT AUSFÜHREN! *"
-echo "*                           *"
-echo "* PLEASE OPERATE AS ROOT!   *"
-echo "*****************************"
-echo ""
+${clear}
+${echo} ""
+${echo} "*****************************"
+${echo} "* BITTE ALS ROOT AUSFÜHREN! *"
+${echo} "*                           *"
+${echo} "* PLEASE OPERATE AS ROOT!   *"
+${echo} "*****************************"
+${echo} ""
 exit 1
 fi
-clear
-echo "*************************************************************************************"
-echo "*                        ACHTUNG! WARNING! ACHTUNG! WARNING!                        *"
-echo "*                                                                                   *"
-echo "*   Nextcloud und ALLE Benutzer-Daten und -Dateien werden unwiderruflich gelöscht!  *"
-echo "* Nextcloud as well as ALL user files will be IRREVERSIBLY REMOVED from the system! *"
-echo "*                                                                                   *"
-echo "*************************************************************************************"
-echo
-echo "Press Ctrl+C To Abort  // Drücke STRG+C um abzubrechen"
-echo
+${clear}
+${echo} "*************************************************************************************"
+${echo} "*                        ACHTUNG! WARNING! ACHTUNG! WARNING!                        *"
+${echo} "*                                                                                   *"
+${echo} "*   Nextcloud und ALLE Benutzer-Daten und -Dateien werden unwiderruflich gelöscht!  *"
+${echo} "* Nextcloud as well as ALL user files will be IRREVERSIBLY REMOVED from the system! *"
+${echo} "*                                                                                   *"
+${echo} "*************************************************************************************"
+${echo}
+${echo} "Press Ctrl+C To Abort  // Drücke STRG+C um abzubrechen"
+${echo}
 seconds=$((10))
 while [ \$seconds -gt 0 ]; do
-   echo -ne "Removal begins after: \$seconds\033[0K\r"
+   ${echo} -ne "Removal begins after: \$seconds\033[0K\r"
    sleep 1
    : \$((seconds--))
 done
-rm -Rf $NEXTCLOUDDATAPATH
+${rm} -Rf $NEXTCLOUDDATAPATH
 ${mv} /etc/hosts.bak /etc/hosts
-echo "Software entfernen..."
-apt remove --purge --allow-change-held-packages -y nginx* php* mariadb-* mysql-common libdbd-mariadb-perl galera-* postgresql-* redis* fail2ban ufw
-rm -Rf /etc/ufw /etc/fail2ban /var/www /etc/mysql /etc/postgresql /etc/postgresql-common /var/lib/mysql /var/lib/postgresql /etc/letsencrypt /var/log/nextcloud /home/$BENUTZERNAME/Nextcloud-Installationsskript/install.log /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
+${apt} remove --purge --allow-change-held-packages -y nginx* php* mariadb-* mysql-common libdbd-mariadb-perl galera-* postgresql-* redis* fail2ban ufw
+${rm} -Rf /etc/ufw /etc/fail2ban /var/www /etc/mysql /etc/postgresql /etc/postgresql-common /var/lib/mysql /var/lib/postgresql /etc/letsencrypt /var/log/nextcloud /home/$BENUTZERNAME/Nextcloud-Installationsskript/install.log /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
 ${addaptrepository} ppa:ondrej/php -ry
 ${addaptrepository} ppa:ondrej/nginx -ry
-rm -f /etc/ssl/certs/dhparam.pem /etc/apt/sources.list.d/* /etc/motd /root/.bash_aliases
+${rm} -f /etc/ssl/certs/dhparam.pem /etc/apt/sources.list.d/* /etc/motd /root/.bash_aliases
 deluser --remove-all-files acmeuser
 crontab -u www-data -r
-rm -f /etc/sudoers.d/acmeuser
-apt autoremove -y
-apt autoclean -y
+${rm} -f /etc/sudoers.d/acmeuser
+${apt} autoremove -y
+${apt} autoclean -y
 exit 0
 EOF
-chmod +x /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
+${chmod} +x /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
 
 ###########################
 # D: Hostdatei anpassen   #
