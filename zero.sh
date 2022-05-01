@@ -1184,7 +1184,8 @@ ${echo} "Passwordreset     : nocc user:resetpassword" $NEXTCLOUDADMINUSER
 ${echo} ""
 ${echo} "Nextcloud datapath: "$NEXTCLOUDDATAPATH
 ${echo} ""
-${echo} "Nextcloud DB-/User: nextcloud // nextcloud"
+${echo} "Nextcloud DB      : nextcloud"
+${echo} "Nextcloud DB-User : "$NCDBUSER" / "$NCDBPASSWORD
 if [ $DATABASE == "m" ]
 then
 ${echo} ""
