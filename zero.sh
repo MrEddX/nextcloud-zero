@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################################################################
-# Ubuntu 22.04+ LTS x86_64
+# Ubuntu 20.04+ / 22.04+ LTS x86_64
 # Nextcloud 23+ and 24+ (if released!)
 # Carsten Rieger IT-Services (www.c-rieger.de)
 # Vielen Dank an / many thanks to:
