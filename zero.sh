@@ -746,6 +746,10 @@ ${cat} <<EOF >/etc/nginx/conf.d/http.conf
 upstream php-handler {
   server unix:/run/php/php8.0-fpm.sock;
   }
+map \$arg_v \$asset_immutable {
+    "" "";
+    default "immutable";
+}
   server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -760,7 +764,6 @@ upstream php-handler {
       }
    }
 EOF
-### MUSS für Nextcloud 24 angepasst werden!
 ${cat} <<EOF >/etc/nginx/conf.d/nextcloud.conf
 server {
   listen 443 ssl http2 default_server;
@@ -845,8 +848,9 @@ server {
     fastcgi_send_timeout 3600;
     fastcgi_connect_timeout 3600;
     }
-  location ~ \.(?:css|js|svg|gif|png|jpg|ico|wasm|tflite)\$ {
+  location ~ \.(?:css|js|svg|gif|png|jpg|ico|wasm|tflite|map)\$ {
     try_files \$uri /index.php\$request_uri;
+    add_header Cache-Control "public, max-age=15778463, \$asset_immutable";
     expires 6M;
     access_log off;
     location ~ \.wasm\$ {
