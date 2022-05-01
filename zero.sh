@@ -704,10 +704,10 @@ EOF
 else
 ${apt} install -y php8.0-pgsql postgresql-14 --allow-change-held-packages
 sudo -u postgres psql <<EOF
-CREATE USER nextcloud WITH PASSWORD 'nextcloud';
+CREATE USER ${NCDBUSER} WITH PASSWORD '${NCDBPASSWORD}';
 CREATE DATABASE nextcloud TEMPLATE template0 ENCODING 'UNICODE';
-ALTER DATABASE nextcloud OWNER TO nextcloud;
-GRANT ALL PRIVILEGES ON DATABASE nextcloud TO nextcloud;
+ALTER DATABASE nextcloud OWNER TO ${NCDBUSER};
+GRANT ALL PRIVILEGES ON DATABASE nextcloud TO ${NCDBUSER};
 EOF
 ${service} postgresql stop
 ${cp} /etc/postgresql/14/main/postgresql.conf /etc/postgresql/14/main/postgresql.conf.bak
