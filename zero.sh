@@ -700,15 +700,18 @@ y
 EOF
         mysql -u root -e "SET PASSWORD FOR root@'localhost' = PASSWORD('$MARIADBROOTPASSWORD'); FLUSH PRIVILEGES;"
 else
+if [ "$(lsb_release -r | awk '{ print $2 }')" = "20.04" ]
+then
+${apt} install -y php8.0-pgsql postgresql-12 --allow-change-held-packages
+else
 ${apt} install -y php8.0-pgsql postgresql-14 --allow-change-held-packages
+fi
 sudo -u postgres psql <<EOF
 CREATE USER ${NCDBUSER} WITH PASSWORD '${NCDBPASSWORD}';
 CREATE DATABASE nextcloud TEMPLATE template0 ENCODING 'UNICODE';
 ALTER DATABASE nextcloud OWNER TO ${NCDBUSER};
 GRANT ALL PRIVILEGES ON DATABASE nextcloud TO ${NCDBUSER};
 EOF
-${service} postgresql stop
-${cp} /etc/postgresql/14/main/postgresql.conf /etc/postgresql/14/main/postgresql.conf.bak
 ${service} postgresql restart
 fi
 
