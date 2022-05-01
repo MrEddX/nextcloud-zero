@@ -145,7 +145,7 @@ fi
 ###########################
 if [ ! -d "/home/$BENUTZERNAME/" ]; then
   echo "* Erstelle:  Benutzerverzeichnis .....:::::: OK *"
-  echo "* Createing: Benutzerverzeichnis .....:::::: OK *"
+  echo "* Creating:  Home Directory ..........:::::: OK *"
   echo ""
   mkdir /home/$BENUTZERNAME/
   echo "* Test: Benutzerverzeichnis ........:::::::: OK *"
@@ -159,7 +159,7 @@ if [ ! -d "/home/$BENUTZERNAME/" ]; then
 
 if [ ! -d "/home/$BENUTZERNAME/Nextcloud-Installationsskript/" ]; then
   echo "* Erstelle: Installationsskript-Verzeichnis: OK *"
-  echo "* Createing: Install directory ......::::::: OK *"
+  echo "* Creating: Install directory .......::::::: OK *"
   echo ""
   mkdir /home/$BENUTZERNAME/Nextcloud-Installationsskript/
   echo "* Test: Installationsskript-Verzeichnis ..:: OK *"
@@ -267,13 +267,15 @@ crontab -u www-data -r
 ${rm} -f /etc/sudoers.d/acmeuser
 ${apt} autoremove -y
 ${apt} autoclean -y
+echo ""
+echo "Done!"
 exit 0
 EOF
 ${chmod} +x /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh
 
 ###########################
 # D: Hostdatei anpassen   #
-# E: modify host file     #
+# E: Мodify host file     #
 ###########################
 ${cp} /etc/hosts /etc/hosts.bak
 ${sed} -i '/127.0.1.1/d' /etc/hosts
@@ -317,7 +319,7 @@ function update_and_clean() {
 
 ###########################
 # D: Kosmetische Funktion #
-# E: cosmetical function  #
+# E: Cosmetical function  #
 ###########################
 CrI() {
   while ps "$!" > /dev/null; do
@@ -330,7 +332,7 @@ CrI() {
 ###########################
 # D: Relevante Software   #
 #    wird f. apt geblockt #
-# E: relevant software    #
+# E: Relevant software    #
 #    will be blocked for  #
 #    apt                  #
 ###########################
@@ -344,7 +346,7 @@ function setHOLD() {
 
 ###########################
 # D: Services neu starten #
-# E: restart services     #
+# E: Restart services     #
 ###########################
 function restart_all_services() {
   ${service} nginx restart
@@ -369,14 +371,14 @@ function nextcloud_scan_data() {
   }
 
 ###########################
-# D: verwende IPv4 f. apt #
-# E: use IPv4 for apt     #
+# D: Verwende IPv4 f. apt #
+# E: Use IPv4 for apt     #
 ###########################
 ${echo} 'Acquire::ForceIPv4 "true";' >> /etc/apt/apt.conf.d/99force-ipv4
 
 ###########################
 # D: Basissoftware        #
-# E: required software    #
+# E: Required software    #
 ###########################
 ${clear}
 ${echo} "Systemaktualisierung und Einrichtung der Software-Repos"
@@ -390,7 +392,7 @@ ssl-cert tree ubuntu-keyring unzip wget zip
 
 ###########################
 # D: Energiesparmodus: aus#
-# E: energy mode: off     #
+# E: Energy mode: off     #
 ###########################
 ${systemctl} mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 
@@ -425,19 +427,19 @@ fi
 
 ###########################
 # D: Entfernen Autoupdates#
-# E: remove unatt.upgrades#
+# E: Remove unatt.upgrades#
 ###########################
 ${apt} purge -y unattended-upgrades
 
 ###########################
 # D: Systemaktualisierung #
-# E: system update        #
+# E: System update        #
 ###########################
 update_and_clean
 
 ###########################
 # D: Bereinigung          #
-# E: settle               #
+# E: Clean Up             #
 ###########################
 ${apt} remove -y apache2 nginx nginx-common nginx-full --allow-change-held-packages
 ${rm} -Rf /etc/apache2 /etc/nginx
@@ -492,7 +494,7 @@ ${service} nginx restart
 
 ###########################
 # D: Verzeichnisse anlegen#
-# E: create directories   #
+# E: Create directories   #
 ###########################
 ${mkdir} -p /var/log/nextcloud /var/www/letsencrypt/.well-known/acme-challenge /etc/letsencrypt/rsa-certs /etc/letsencrypt/ecc-certs
 ${chmod} -R 775 /var/www/letsencrypt
@@ -723,7 +725,7 @@ ${usermod} -a -G redis www-data
 ${apt} install -y ssl-cert
 
 ###########################
-# NGINX TLS  #
+# NGINX TLS               #
 ###########################
 [ -f /etc/nginx/conf.d/default.conf ] && ${mv} /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bak
 ${touch} /etc/nginx/conf.d/default.conf
@@ -1160,7 +1162,7 @@ ${echo} "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ${echo} ""
 ${echo} "Nextcloud:"
 ${echo} ""
-${echo} "https://$NEXTCLOUDDNS oder https://$IPA"
+${echo} "https://$NEXTCLOUDDNS oder/or https://$IPA"
 ${echo} ""
 ${echo} "*******************************************************************************"
 ${echo} ""
@@ -1221,13 +1223,13 @@ sudo -u www-data php /var/www/nextcloud/occ db:add-missing-columns
 sudo -u www-data php /var/www/nextcloud/occ db:convert-filecache-bigint
 sudo -u www-data sed -i "s/output_buffering=.*/output_buffering=0/" /var/www/nextcloud/.user.ini
 sudo -u www-data php /var/www/nextcloud/occ app:update --all
-if [ -e /var/run/reboot-required ]; then echo "*** NEUSTART ERFORDERLICH ***";fi
+if [ -e /var/run/reboot-required ]; then echo "*** NEUSTART ERFORDERLICH *** / *** REBOOT REQUIRED ***";fi
 exit 0
 EOF
 ${chmod} +x /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
 
 ###########################
-# Bereinigung/Settle      #
+# Bereinigung/Clean Up    #
 ###########################
 ${cat} /dev/null > ~/.bash_history
 history -c
