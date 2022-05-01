@@ -686,15 +686,13 @@ quote-names
 [isamchk]
 key_buffer = 16M
 EOF
-        ${service} mysql restart
-        mysql=$(which mysql)
-        ${mysql} <<EOF
-CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-CREATE USER nextcloud@localhost identified by 'nextcloud';
-GRANT ALL PRIVILEGES on nextcloud.* to nextcloud@localhost;
-FLUSH privileges;
-EOF
-        cat <<EOF | ${mysql_secure_installation}
+${service} mysql restart
+mysql=$(which mysql)
+${mysql} -e "CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
+${mysql} -e "CREATE USER ${NCDBUSER}@localhost IDENTIFIED BY '${NCDBPASSWORD}';"
+${mysql} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO '${NCDBUSER}'@'localhost';"
+${mysql} -e "FLUSH PRIVILEGES;"
+cat <<EOF | ${mysql_secure_installation}
 \n
 n
 y
