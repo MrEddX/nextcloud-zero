@@ -2,7 +2,7 @@
 D: Installieren Sie Ihren eigenen Nextcloud-Server in weniger als 10 Minuten.<br>
 E: Install your own Nextcloud server in less than 10 minutes.
 
-<h2>Auf Basis von / Based on Ubuntu 20/22 & Nextcloud 23/24 (if released!)</h2>
+<h2>Auf Basis von / Based on Ubuntu 20.04 LTS / 22.04 LTS & Nextcloud 23.x/24.x (24 if released!)</h2>
 
 * Ubuntu 20.04 LTS / 22.04 LTS x86_64
 * NGINX 1.2x from PPA
