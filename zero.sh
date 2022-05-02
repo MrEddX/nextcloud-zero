@@ -391,7 +391,8 @@ ${echo} 'Acquire::ForceIPv4 "true";' >> /etc/apt/apt.conf.d/99force-ipv4
 # E: Required software    #
 ###########################
 ${clear}
-${echo} "Systemaktualisierung und Einrichtung der Software-Repos"
+${echo} "Systemaktualisierungen u. Rerepositories"
+${echo} "System updates and software repositories"
 ${echo} ""
 sleep 3
 ${apt} upgrade -y
