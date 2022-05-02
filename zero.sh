@@ -269,8 +269,8 @@ ${rm} -Rf $NEXTCLOUDDATAPATH
 ${mv} /etc/hosts.bak /etc/hosts
 ${apt} remove --purge --allow-change-held-packages -y nginx* php* mariadb-* mysql-common libdbd-mariadb-perl galera-* postgresql-* redis* fail2ban ufw
 ${rm} -Rf /etc/ufw /etc/fail2ban /var/www /etc/mysql /etc/postgresql /etc/postgresql-common /var/lib/mysql /var/lib/postgresql /etc/letsencrypt /var/log/nextcloud /home/$BENUTZERNAME/Nextcloud-Installationsskript/install.log /home/$BENUTZERNAME/Nextcloud-Installationsskript/update.sh
+${rm} -Rf /etc/nginx /usr/share/keyrings/nginx-archive-keyring.gpg
 ${addaptrepository} ppa:ondrej/php -ry
-${addaptrepository} ppa:ondrej/nginx -ry
 ${rm} -f /etc/ssl/certs/dhparam.pem /etc/apt/sources.list.d/* /etc/motd /root/.bash_aliases
 deluser --remove-all-files acmeuser
 crontab -u www-data -r
@@ -418,10 +418,10 @@ ${addaptrepository} ppa:ondrej/php -y
 ###########################
 # NGINX Repositories      #
 ###########################
-${addaptrepository} ppa:ondrej/nginx -y
-# Aktuell nicht verfügbar
-# ${curl} https://nginx.org/keys/nginx_signing.key | /usr/bin/gpg --dearmor | /usr/bin/tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
-# ${echo} "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" | /usr/bin/tee /etc/apt/sources.list.d/nginx.list
+${curl} https://nginx.org/keys/nginx_signing.key | gpg --dearmor | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+${echo} "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+  http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" \
+  | sudo tee /etc/apt/sources.list.d/nginx.list
 
 ###########################
 # DB Repositories         #
