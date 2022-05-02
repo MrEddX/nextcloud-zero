@@ -6,6 +6,7 @@
 # Vielen Dank an / many thanks to:
 # https://github.com/MrEddX
 # https://github.com/DasCanard
+# https://codeberg.org/DecaTec
 ##########################################################################################
 
 ##############################
