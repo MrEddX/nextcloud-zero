@@ -13,7 +13,7 @@ E: Install your own Nextcloud server in less than 10 minutes.
 <h2>INSTALLATION:</h2>
 <h3>D/E: Vorbereitungen/Preparations:</h3>
 <code>sudo -s</code><br>
-<code>git clone ssh://git@github.com/gitusername/nextcloud-zero.git</code><br>
+<code>git clone https://github.com/criegerde/nextcloud-zero</code><br>
 <code>cp nextcloud-zero/zero.sh .</code><br>
 <code>chmod +x zero.sh*.sh</code><br> <br>
 <h3>D/E: Konfigurationsvariablen anpassen / modify configuration variables:</h3></code>
