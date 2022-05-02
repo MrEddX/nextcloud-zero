@@ -46,9 +46,8 @@ D. Sofern Sie das Skript erneut ausführen möchten, so führen Sie bitte zuerst
 E: If you want to re-install your server - please uninstall your software first.<br> <br>
 <code>/home/*benutzer*/Nextcloud-Installationsskript/uninstall.sh</code><br>
 <code>rm -f /home/*benutzer*/Nextcloud-Installationsskript/uninstall.sh</code><br> <br>
-D: Dabei werden alle Softwarepakete (inkl. DB) sowie alle Verzeichnisse und Daten aus der vorherigen Installation entfernt.<br>
-Im Anschluss daran kann die Installation erneut durchgeführt werden.<br>
-E: All data, databases and software from the previous installation will be removed.<br>Afterwards you can re-run the installation script.<br>
+D: Dabei werden alle Softwarepakete (inkl. DB) sowie alle Verzeichnisse und Daten aus der vorherigen Installation entfernt. Im Anschluss daran kann die Installation erneut durchgeführt werden.<br>
+E: All data, databases and software from the previous installation will be removed. Afterwards you can re-run the installation script.<br>
 <h2>D/E: ERNEUTE INSTALLATION/RE-INSTALLATION:</h2>
 <code>./zero.sh</code><br>
 <h2>D/E: LOGDATEI/LOGFILE:</h2>
