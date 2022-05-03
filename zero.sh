@@ -106,6 +106,8 @@ PHONEREGION='DE'
 # Start/Begin            #
 ###########################
 
+start=$(date +%s)
+
 # D: Linuxbenutzer ermitteln
 # E: identify the current user
 BENUTZERNAME=$(logname)
@@ -1256,4 +1258,16 @@ ${chmod} +x /home/"$BENUTZERNAME"/Nextcloud-Installationsskript/update.sh
 ${cat} /dev/null > ~/.bash_history
 history -c
 history -w
+
+#Calculating script runtime
+end=$(date +%s)
+runtime=$((end-start))
+echo ""
+if [ "$runtime" -lt 60 ] || [ $runtime -ge "120" ]; then
+echo "Installation process completed in $((runtime/60)) minutes and $((runtime%60)) seconds."
+else
+echo "Installation process completed in $((runtime/60)) minute and $((runtime%60)) seconds."
+echo ""
+fi
+
 exit 0
