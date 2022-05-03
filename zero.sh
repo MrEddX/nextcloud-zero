@@ -149,19 +149,31 @@ exit 1
 fi
 
 ##########################
+# Re-Install. verhindern #
 # Prevent Second Run     #
 ##########################
 if [ -e "/var/www/nextcloud/config/config.php" ] || [ -e /etc/nginx/conf.d/nextcloud.conf ]; then
+  clear
+  echo "*************************************************"
+  echo "* Test: Bestehende Insatllation ....:::::FAILED *"
+  echo "* Test: Previous installation ......:::::FAILED *"
+  echo "*************************************************"
   echo ""
-  echo "* Test: Previous installation .........::::: FAILED *"
+  echo "* Nextcloud ist auf diesem System bereits installiert!"
+  echo "* Nextcloud has already been installed on this system!"
   echo ""
-  echo "Nextcloud has already been installed on this system!"
-  echo "Please remove it completely before proceeding to a new installation."
-  echo "Uninstall script is located at: /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh"
+  echo "* Bitte entfernen Sie alles komplett, bevor Sie mit einer Installation fortfahren."
+  echo "* Please remove it completely before proceeding to a new installation."
+  echo ""
+  echo "* Das Uninstall-Skript finden Sie hier // Please find the uninstall script here:"
+  echo "* /home/$BENUTZERNAME/Nextcloud-Installationsskript/uninstall.sh"
   echo ""
   exit 1
 else
-  echo "* Test: Previous installation .........::::: OK *"
+  echo "*************************************************"
+  echo "* Keine Bestehende Installation ......:::::: OK *"
+  echo "* No previous installation ..........::::::: OK *"
+  echo "*************************************************"
   echo ""
 fi
 
